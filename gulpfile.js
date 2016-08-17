@@ -14,6 +14,9 @@ var gulp = require('gulp'),
     browserSync = require('browser-sync'),
     del = require('del');
 
+// para q no dañe scopes de angular
+var ngannotate = require('gulp-ng-annotate');
+
 gulp.task('jshint', function() {
     return gulp.src('app/scripts/**/*.js')
         .pipe(jshint())
@@ -34,7 +37,8 @@ gulp.task('usemin',['jshint'], function () {
     return gulp.src('./app/menu.html')
         .pipe(usemin({
             css:[minifycss(),rev()],
-            js: [uglify(),rev()]
+           // js: [uglify(),rev()]  // corregido para no dañar scope
+            js:[ngannotate(),uglify(),rev()]
         }))
         .pipe(gulp.dest('dist/'));
 });
